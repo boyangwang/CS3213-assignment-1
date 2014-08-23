@@ -1,9 +1,9 @@
 import java.util.*;
 
 public class EntryProcessor{
-	public TreeMap<String, TreeSet<String>> entryList;
-	public HashSet<String> ignoreList;
+	private EntryManager entryMan;
 	private static EntryProcessor instance = null;
+	
 	
 	public static void main(String[] args){
 		EntryProcessor ep = EntryProcessor.getInstance();
@@ -15,15 +15,13 @@ public class EntryProcessor{
 		ignore.add("as");
 		ignore.add("a");
 		ignore.add("after");
-		ep.addIgnore(ignore);
-		System.out.println("ignorelist size="+ep.ignoreList.size());
+		System.out.println("ignorelist size="+ep.addIgnore(ignore));
 		
 		ArrayList<String> str = new ArrayList<String>();
 		str.add("The Day after tomorrow");
 		str.add("Fast and Furious");
 		str.add("Man of Steel");
-		ep.addEntries(str);
-		System.out.println("entryList size ="+ep.entryList.size());
+		System.out.println("entryList size ="+ep.addEntries(str));
 
 		ArrayList<String> keywords = new ArrayList<String>();
 		keywords.add("Day");
@@ -37,6 +35,7 @@ public class EntryProcessor{
 			System.out.println(result.get(i));
 		}
 	}
+	
 
 	private EntryProcessor(){	
 		init();
@@ -50,71 +49,38 @@ public class EntryProcessor{
 	}
 
 	public void init(){
-		entryList = new TreeMap<String, TreeSet<String>>();
-		ignoreList = new HashSet<String>();
+		entryMan = new EntryManager();
 	}
 
-	public boolean addEntries(ArrayList<String> entries){
+	public int addEntries(ArrayList<String> entries){
 		int size = entries.size();
+		int success = 0;
 		for(int i=0; i<size; i++){
-			String entry = entries.get(i);
-			String[] words = entry.split(" ");
-			int noOfWords = words.length;
-			
-			//Make characters of words in ignore list to all lower case
-			for(int k=0; k<noOfWords; k++){
-				if(ignoreList.contains(words[k].toLowerCase())){
-					words[k] = words[k].toLowerCase();
-				} else {
-					words[k] = words[k].substring(0, 1).toUpperCase().concat(words[k].substring(1)); 
-				}
-			}
-			
-			for(int k=0; k<noOfWords; k++){
-				if(ignoreList.contains(words[k].toLowerCase())==false){
-					StringBuilder strBuilder = new StringBuilder();
-					TreeSet<String> stringBeginWithWord = null;
-					for(int l=k; l<noOfWords; l++){
-						strBuilder.append(words[l]+" ");
-					}
-					for(int l=0; l<k; l++){
-						strBuilder.append(words[l]+" ");
-					}
-							
-					if(entryList.containsKey(words[k])){
-						stringBeginWithWord = entryList.get(words[k]);
-						stringBeginWithWord.add(strBuilder.toString());
-					} else {
-						stringBeginWithWord = new TreeSet<String>();
-						stringBeginWithWord.add(strBuilder.toString());
-						entryList.put(words[k], stringBeginWithWord);
-					}
-				}
+			if(entryMan.addEntry(entries.get(i))){
+				success++;
 			}
 		}
-
-		return true;
+		return success;
 	}
 
-	public boolean addIgnore(ArrayList<String> entries){
+	public int addIgnore(ArrayList<String> entries){
 		int size = entries.size();
+		int success = 0;
 		for(int i=0; i<size; i++){
-			ignoreList.add(entries.get(i).toLowerCase());
+			if(entryMan.addIgnore(entries.get(i))){
+				success++;
+			}
 		}
-		return true;
+		return success;
 	}
 
 	public ArrayList<String> searchEntriesByKeyWords(ArrayList<String> keyWords){
-		ArrayList<String> entries = new ArrayList<String>();
-		int size = keyWords.size();
-		Collections.sort(keyWords);
-		for(int i=0; i<size; i++){
-			TreeSet<String> strings = entryList.get(keyWords.get(i));
-			Iterator it = strings.iterator();
-			while(it.hasNext()){
-				entries.add(it.next().toString());
-			}
+		ArrayList<String> result;
+		if(keyWords.size() > 0){
+			result = entryMan.getEntriesByKeyWords(keyWords);
+		} else {
+			result = entryMan.getAllEntries();
 		}
-		return entries;
+		return result;
 	}
 }
