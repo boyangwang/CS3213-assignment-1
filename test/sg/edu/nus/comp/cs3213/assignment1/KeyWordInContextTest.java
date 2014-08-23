@@ -14,5 +14,13 @@ public class KeyWordInContextTest {
 		
 		assertTrue(true);
 	}
+	
+	@Test
+	public void addEntry_whenNoIgnore() throws Exception {
+		KeyWordInContext.main(null);
+		String input = "2\naaa\nbbb\n\n";
+		System.setIn(new java.io.ByteArrayInputStream(input.getBytes()));
+		
+	}
 
 }
