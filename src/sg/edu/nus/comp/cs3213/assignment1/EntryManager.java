@@ -1,3 +1,5 @@
+package sg.edu.nus.comp.cs3213.assignment1;
+
 import java.util.*;
 
 public class EntryManager{
@@ -69,10 +71,13 @@ public class EntryManager{
 		int size = keyWords.size();
 		Collections.sort(keyWords);
 		for(int i=0; i<size; i++){
-			TreeSet<String> strings = entryList.get(keyWords.get(i));
-			Iterator it = strings.iterator();
-			while(it.hasNext()){
-				entries.add(it.next().toString());
+			String str = keyWords.get(i);
+			TreeSet<String> strings = entryList.get(str.substring(0,1).toUpperCase().concat(str.substring(1)));
+			if(strings != null){
+				Iterator it = strings.iterator();
+				while(it.hasNext()){
+					entries.add(it.next().toString());
+				}
 			}
 		}
 		return entries;
@@ -84,9 +89,11 @@ public class EntryManager{
 		Iterator entryIt = mapValues.iterator();
 		for(Map.Entry<String, TreeSet<String>> keyWords : entryList.entrySet()){
 			TreeSet<String> strings = keyWords.getValue();
-			Iterator it = strings.iterator();
-			while(it.hasNext()){
-				entries.add(it.next().toString());    
+			if(strings != null){
+				Iterator it = strings.iterator();
+				while(it.hasNext()){
+					entries.add(it.next().toString());    
+				}
 			}
 		}
 

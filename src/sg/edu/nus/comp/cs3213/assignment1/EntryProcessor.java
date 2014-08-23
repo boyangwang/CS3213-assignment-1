@@ -9,29 +9,30 @@ public class EntryProcessor{
 	
 	public static void main(String[] args){
 		EntryProcessor ep = EntryProcessor.getInstance();
-		ArrayList<String> ignore = new ArrayList<String>();
-		ignore.add("is");
-		ignore.add("of");
-		ignore.add("the");
-		ignore.add("and");
-		ignore.add("as");
-		ignore.add("a");
-		ignore.add("after");
-		System.out.println("ignorelist size="+ep.addIgnore(ignore));
+//		ArrayList<String> ignore = new ArrayList<String>();
+//		ignore.add("is");
+//		ignore.add("of");
+//		ignore.add("the");
+//		ignore.add("and");
+//		ignore.add("as");
+//		ignore.add("a");
+//		ignore.add("after");
+//		System.out.println("ignorelist size="+ep.addIgnore(ignore));
 		
 		ArrayList<String> str = new ArrayList<String>();
-		str.add("The Day after tomorrow");
-		str.add("Fast and Furious");
-		str.add("Man of Steel");
+		str.add("aaa");
+		str.add("bbb");
+		str.add("ccc");
 		System.out.println("entryList size ="+ep.addEntries(str));
 
 		ArrayList<String> keywords = new ArrayList<String>();
-		keywords.add("Day");
-		keywords.add("Fast");
-		keywords.add("Furious");
-		keywords.add("Man");
-		keywords.add("Steel");
-		keywords.add("Tomorrow");
+		keywords.add("aaa");
+//		keywords.add("Fast");
+//		keywords.add("Furious");
+//		keywords.add("Man");
+//		keywords.add("Steel");
+//		keywords.add("Tomorrow");
+		
 		ArrayList<String> result = ep.searchEntriesByKeyWords(keywords);
 		for(int i=0; i < result.size(); i++){
 			System.out.println(result.get(i));
