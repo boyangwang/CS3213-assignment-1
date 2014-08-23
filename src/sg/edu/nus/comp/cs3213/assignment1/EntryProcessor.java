@@ -1,3 +1,5 @@
+package sg.edu.nus.comp.cs3213.assignment1;
+
 import java.util.*;
 
 public class EntryProcessor{
