@@ -1,19 +1,13 @@
 import java.util.*;
 
 public class EntryProcessor{
-	private TreeMap<String, TreeSet<String>> entryList;
-	private HashSet<String> ignoreList;
+	public TreeMap<String, TreeSet<String>> entryList;
+	public HashSet<String> ignoreList;
 	private static EntryProcessor instance = null;
 	
-	public static void main(){
+	public static void main(String[] args){
 		EntryProcessor ep = EntryProcessor.getInstance();
-		ArrayList<String> str = new ArrayList<String>();
 		ArrayList<String> ignore = new ArrayList<String>();
-		str.add("The Day After Tomorrow");
-		str.add("Fast and Furious");
-		str.add("Man of Steel");
-		ep.addEntries(str);
-		
 		ignore.add("is");
 		ignore.add("of");
 		ignore.add("the");
@@ -22,7 +16,26 @@ public class EntryProcessor{
 		ignore.add("a");
 		ignore.add("after");
 		ep.addIgnore(ignore);
+		System.out.println("ignorelist size="+ep.ignoreList.size());
 		
+		ArrayList<String> str = new ArrayList<String>();
+		str.add("The Day after tomorrow");
+		str.add("Fast and Furious");
+		str.add("Man of Steel");
+		ep.addEntries(str);
+		System.out.println("entryList size ="+ep.entryList.size());
+
+		ArrayList<String> keywords = new ArrayList<String>();
+		keywords.add("Day");
+		keywords.add("Fast");
+		keywords.add("Furious");
+		keywords.add("Man");
+		keywords.add("Steel");
+		keywords.add("Tomorrow");
+		ArrayList<String> result = ep.searchEntriesByKeyWords(keywords);
+		for(int i=0; i < result.size(); i++){
+			System.out.println(result.get(i));
+		}
 	}
 
 	private EntryProcessor(){	
@@ -47,8 +60,18 @@ public class EntryProcessor{
 			String entry = entries.get(i);
 			String[] words = entry.split(" ");
 			int noOfWords = words.length;
+			
+			//Make characters of words in ignore list to all lower case
 			for(int k=0; k<noOfWords; k++){
-				if(ignoreList.contains(words[k])==false){
+				if(ignoreList.contains(words[k].toLowerCase())){
+					words[k] = words[k].toLowerCase();
+				} else {
+					words[k] = words[k].substring(0, 1).toUpperCase().concat(words[k].substring(1)); 
+				}
+			}
+			
+			for(int k=0; k<noOfWords; k++){
+				if(ignoreList.contains(words[k].toLowerCase())==false){
 					StringBuilder strBuilder = new StringBuilder();
 					TreeSet<String> stringBeginWithWord = null;
 					for(int l=k; l<noOfWords; l++){
@@ -76,7 +99,7 @@ public class EntryProcessor{
 	public boolean addIgnore(ArrayList<String> entries){
 		int size = entries.size();
 		for(int i=0; i<size; i++){
-			ignoreList.add(entries.get(i));
+			ignoreList.add(entries.get(i).toLowerCase());
 		}
 		return true;
 	}
