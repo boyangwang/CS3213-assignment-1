@@ -17,10 +17,12 @@ public class KeyWordInContextTest {
 	
 	@Test
 	public void addEntry_whenNoIgnore() throws Exception {
-		KeyWordInContext.main(null);
-		String input = "2\naaa\nbbb\n\n";
-		System.setIn(new java.io.ByteArrayInputStream(input.getBytes()));
 		
+		String input = "2\naaa\nbbb\n\n";
+//		KeyWordInContext.class.getDeclaredMethod(name, parameterTypes)
+		
+		input = "5\naaa bbb\n";
+//		
 	}
 
 }
