@@ -18,11 +18,6 @@ public class KeyWordInContextTest {
 	@Test
 	public void addEntry_whenNoIgnore() throws Exception {
 		
-		String input = "2\naaa\nbbb\n\n";
-//		KeyWordInContext.class.getDeclaredMethod(name, parameterTypes)
-		
-		input = "5\naaa bbb\n";
-//		
 	}
 
 }

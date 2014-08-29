@@ -1,29 +1,26 @@
 package sg.edu.nus.comp.cs3213.assignment1;
 
 import java.io.BufferedReader;
-import java.io.File;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
-import java.util.ArrayList;
 
 public class KeyWordInContext {
 
-	private static final String FILE_NOT_FOUND_MSG = "The file you specified is not found";
-	private static final int READ_FILE_TYPE_IGNORE = 1;
-	private static final int READ_FILE_TYPE_ENTRY = 0;
+	static final int READ_FILE_TYPE_IGNORE = 1;
+	static final int READ_FILE_TYPE_ENTRY = 0;
 
-	private static final int COMMAND_NUMBER_ADD_ENTRIES_MAN = 2;
-	private static final int COMMAND_NUMBER_ADD_ENTRIES_FILE = 1;
-	private static final int COMMAND_NUMBER_SEARCH = 5;
-	private static final int COMMAND_NUMBER_ADD_IGNORE_FILE = 3;
-	private static final int COMMAND_NUMBER_ADD_IGNORE_MAN = 4;
-	private static final int COMMAND_NUMBER_EXIT = 6;
+	public static final int COMMAND_NUMBER_ADD_ENTRIES_MAN = 2;
+	public static final int COMMAND_NUMBER_ADD_ENTRIES_FILE = 1;
+	public static final int COMMAND_NUMBER_SEARCH = 5;
+	public static final int COMMAND_NUMBER_ADD_IGNORE_FILE = 3;
+	public static final int COMMAND_NUMBER_ADD_IGNORE_MAN = 4;
+	public static final int COMMAND_NUMBER_EXIT = 6;
 
-	private static final String INVALID_COMMAND_MSG = "Invalid command. Your input is: %s\nCheck your input.";
-	private static final String IOEXCETION_MSG = "IO exception has occurred. Check file system permission and buffer size.";
-	private static final String EXIT_MSG = "Bye";
+	static final String INVALID_COMMAND_MSG = "Invalid command. Your input is: %s\nCheck your input.";
+	static final String IOEXCEPTION_MSG = "IO exception has occurred. Check file system permission and buffer size.";
+	static final String EXIT_MSG = "Bye";
+	static final String SUCCESS_MSG = "Successful!\n";
+	static final String FILE_NOT_FOUND_MSG = "The file you specified is not found";
 
 	private static final String MENU_INSTRUCTIONS = new StringBuilder(
 			"Welcome to KWIC! Input your command number and then enter. Then input command argument(s). Please see command list and examples below.")
@@ -44,15 +41,12 @@ public class KeyWordInContext {
 			.append("To add ignore words from file:\n").append("3\n")
 			.append("c:\\path\\to\\your\\file\\n").append("\n").append("\n")
 			.toString();
-	private static final String SUCCESS_MSG = "Successful!\n";
-
-	private static Boolean isExit = false;
-	private static ArrayList<String> ignoreList = new ArrayList<String>();
-	private static ArrayList<String> entryList = new ArrayList<String>();
-	private static ArrayList<String> searchList = new ArrayList<String>();
-	private static BufferedReader reader = new BufferedReader(new InputStreamReader(
+	
+	
+	static BufferedReader reader = new BufferedReader(new InputStreamReader(
 			System.in));
-	private static EntryProcessor proc = EntryProcessor.getInstance();
+	static Boolean isExit = false;
+	
 
 	public static void main(String[] args) throws Exception {
 
@@ -68,26 +62,34 @@ public class KeyWordInContext {
 	private static String processCommandInput(String input) throws IOException {
 		int command = Integer.parseInt(input.trim().substring(0, 1));
 		String output = "";
+		ISearchHandler searchHandler;
+		IAddItemHandler addItemHandler;
+		IAddIgnoreHandler addIgnoreHandler;
 		
 		switch (command) {
 		case COMMAND_NUMBER_ADD_IGNORE_MAN:
-			output = handleAddIgnoreManually();
+			addIgnoreHandler = new AddIgnoreHandler();
+			output = addIgnoreHandler.handleAddIgnoreManually();
 			break;
 		
 		case COMMAND_NUMBER_ADD_ENTRIES_MAN:
-			output = handleAddEntriesManually();
+			addItemHandler = new AddItemHandler();
+			output = addItemHandler.handleAddEntriesManually();
 			break;
 					
 		case COMMAND_NUMBER_ADD_ENTRIES_FILE:
-			output = handleAddEntriesFile();
+			addItemHandler = new AddItemHandler();
+			output = addItemHandler.handleAddEntriesFile();
 			break;
 			
 		case COMMAND_NUMBER_ADD_IGNORE_FILE:
-			output = handleAddIgnoreFile();
+			addIgnoreHandler = new AddIgnoreHandler();
+			output = addIgnoreHandler.handleAddIgnoreFile();
 			break;
 			
 		case COMMAND_NUMBER_SEARCH:
-			output = handleSearch();
+			searchHandler = new SearchHandler();
+			output = searchHandler.handleSearch();
 			break;
 			
 		case COMMAND_NUMBER_EXIT:
@@ -100,103 +102,6 @@ public class KeyWordInContext {
 		}
 
 		return output;
-	}
-
-	private static String handleSearch() throws IOException {
-		String[] words;
-		String output = "";
-		words = reader.readLine().split(" ");
-		searchList.clear();
-		for (String w : words) {
-			searchList.add(w);
-		}
-		ArrayList<String> results = proc.searchEntriesByKeyWords(searchList);
-		for (String result : results) {
-			output += result + System.lineSeparator();
-		}
-		return output;
-	}
-
-	private static String handleAddIgnoreFile() throws IOException {
-		
-		String output;
-		String ignorePath = reader.readLine();
-		ignoreList.clear();
-		try {
-			readFileToList(ignorePath, READ_FILE_TYPE_IGNORE);
-			proc.addIgnore(ignoreList);
-			output = "";
-		} catch (FileNotFoundException e) {
-			output = FILE_NOT_FOUND_MSG;
-		} catch (IOException e) {
-			output = IOEXCETION_MSG;
-		}
-		return output;
-	}
-
-	private static String handleAddEntriesFile() throws IOException {
-		
-		String output;
-		String entryPath = reader.readLine();
-		entryList.clear();
-		try {
-			readFileToList(entryPath, READ_FILE_TYPE_ENTRY);
-			proc.addEntries(entryList);
-			output = "";
-		} catch (FileNotFoundException e) {
-			output = FILE_NOT_FOUND_MSG;
-		} catch (IOException e) {
-			output = IOEXCETION_MSG;
-		}
-		return output;
-	}
-
-	private static String handleAddEntriesManually() throws IOException {
-				
-		String line = "";
-		entryList.clear();
-		while ((line = reader.readLine()) != null && !line.equals("")) {
-			System.out.println("Manual import, input: " + line);
-			entryList.add(line);
-		}
-		proc.addEntries(entryList);
-		return SUCCESS_MSG;
-	}
-
-	private static String handleAddIgnoreManually()
-			throws IOException {
-		
-		String[] words = reader.readLine().split(" ");
-		ignoreList.clear();
-		for (String w : words) {
-			ignoreList.add(w);
-		}
-		proc.addIgnore(ignoreList);
-		return SUCCESS_MSG;
-	}
-
-	private static void readFileToList(String path,
-			int readFileType) throws IOException, FileNotFoundException {
-		File f = new File(path);
-		BufferedReader r = new BufferedReader(new FileReader(f));
-		if (readFileType == READ_FILE_TYPE_ENTRY) {
-			String line = null;
-			while ((line = r.readLine()) != null) {
-				entryList.add(line);
-			}
-			
-		} else {
-			String line = null;
-			while ((line = r.readLine()) != null) {
-				String[] words = line.split(" ");
-				for (String w : words) {
-					ignoreList.add(w);
-				}
-			}
-			
-		}
-		r.close();
-
 	}
 
 }
