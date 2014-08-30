@@ -45,7 +45,7 @@ public class AddItemHandler implements IAddItemHandler {
 		entryList.clear();
 		try {
 			while ((line = KeyWordInContext.reader.readLine()) != null && !line.equals("")) {
-				System.out.println("Manual import, input: " + line);
+//				System.out.println("Manual import, input: " + line);
 				entryList.add(line);
 			}
 		} catch (IOException e) {

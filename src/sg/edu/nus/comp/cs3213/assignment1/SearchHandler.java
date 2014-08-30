@@ -17,7 +17,10 @@ public class SearchHandler implements ISearchHandler {
 		String[] words = new String[0];
 		String output = "";
 		try {
-			words = reader.readLine().split(" ");
+			String line = reader.readLine().trim();
+			if (!line.equals("")) {
+				words = line.split(" ");
+			}
 		} catch (IOException e) {
 			e.printStackTrace();
 			return KeyWordInContext.IOEXCEPTION_MSG;
