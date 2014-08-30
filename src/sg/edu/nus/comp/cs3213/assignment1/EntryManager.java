@@ -2,44 +2,48 @@ package sg.edu.nus.comp.cs3213.assignment1;
 
 import java.util.*;
 
-public class EntryManager{
+public class EntryManager {
 
+	static final String INTERNAL_ERROR_MSG = "Internal Error has occured.";
 	private TreeMap<String, TreeSet<String>> entryList;
 	private HashSet<String> ignoreList;
-	public EntryManager(){
+
+	public EntryManager() {
 		init();
 	}
 
-	public void init(){
+	public void init() {
 		entryList = new TreeMap<String, TreeSet<String>>();
 		ignoreList = new HashSet<String>();
 	}
-	public boolean addEntry(String entry){
+
+	public boolean addEntry(String entry) {
 		String[] words = entry.split(" ");
 		boolean result = true;
 		int noOfWords = words.length;
-		try{
-			//Make characters of words in ignore list to all lower case
-			for(int k=0; k<noOfWords; k++){
-				if(ignoreList.contains(words[k].toLowerCase())){
+		try {
+			// Make characters of words in ignore list to all lower case
+			for (int k = 0; k < noOfWords; k++) {
+				if (ignoreList.contains(words[k].toLowerCase())) {
 					words[k] = words[k].toLowerCase();
 				} else {
-					words[k] = words[k].substring(0, 1).toUpperCase().concat(words[k].substring(1)); 
+					words[k] = words[k].substring(0, 1).toUpperCase()
+							.concat(words[k].substring(1));
 				}
 			}
 
-			for(int k=0; k<noOfWords; k++){
-				if(ignoreList.contains(words[k].toLowerCase())==false){
+			for (int k = 0; k < noOfWords; k++) {
+				if (ignoreList.contains(words[k].toLowerCase()) == false) {
 					StringBuilder strBuilder = new StringBuilder();
 					TreeSet<String> stringBeginWithWord = null;
-					for(int l=k; l<noOfWords; l++){
-						strBuilder.append(words[l]+" ");
+					for (int l = k; l < noOfWords; l++) {
+						strBuilder.append(words[l] + " ");
 					}
-					for(int l=0; l<k; l++){
-						strBuilder.append(words[l]+" ");
+					for (int l = 0; l < k; l++) {
+						strBuilder.append(words[l] + " ");
 					}
 
-					if(entryList.containsKey(words[k])){
+					if (entryList.containsKey(words[k])) {
 						stringBeginWithWord = entryList.get(words[k]);
 						stringBeginWithWord.add(strBuilder.toString());
 					} else {
@@ -56,9 +60,9 @@ public class EntryManager{
 		return result;
 	}
 
-	public boolean addIgnore(String entry){
+	public boolean addIgnore(String entry) {
 		boolean result = true;
-		try{
+		try {
 			ignoreList.add(entry.toLowerCase());
 		} catch (NullPointerException npe) {
 			result = false;
@@ -66,41 +70,57 @@ public class EntryManager{
 		return result;
 	}
 
-	public ArrayList<String> getEntriesByKeyWords(ArrayList<String> keyWords){
-		ArrayList<String> entries = new ArrayList<String>();
-		int size = keyWords.size();
-		Collections.sort(keyWords);
-		for(int i=0; i<size; i++){
-			String str = keyWords.get(i).trim();
-			
-			if (str == null || str.equals("")) {
-				continue;
-			}
-			
-			TreeSet<String> strings = entryList.get(str.substring(0,1).toUpperCase().concat(str.substring(1)));
-			if(strings != null){
-				Iterator<String> it = strings.iterator();
-				while(it.hasNext()){
-					entries.add(it.next().toString());
+	public ArrayList<String> getEntriesByKeyWords(ArrayList<String> keyWords) {
+		try {
+			ArrayList<String> entries = new ArrayList<String>();
+			int size = keyWords.size();
+			Collections.sort(keyWords);
+			for (int i = 0; i < size; i++) {
+				String str = keyWords.get(i).trim();
+
+				if (str == null || str.equals("")) {
+					continue;
+				}
+
+				TreeSet<String> strings = entryList.get(str.substring(0, 1)
+						.toUpperCase().concat(str.substring(1)));
+				if (strings != null) {
+					Iterator<String> it = strings.iterator();
+					while (it.hasNext()) {
+						entries.add(it.next().toString());
+					}
 				}
 			}
+			return entries;
+		} catch (Exception e) {
+			e.printStackTrace();
+			ArrayList<String> err = new ArrayList<String>();
+			err.add(INTERNAL_ERROR_MSG);
+			return err;
 		}
-		return entries;
 	}
 
-	public ArrayList<String> getAllEntries(){
-		ArrayList<String> entries = new ArrayList<String>();
-		
-		for(Map.Entry<String, TreeSet<String>> keyWords : entryList.entrySet()){
-			TreeSet<String> strings = keyWords.getValue();
-			if(strings != null){
-				Iterator<String> it = strings.iterator();
-				while(it.hasNext()){
-					entries.add(it.next().toString());    
+	public ArrayList<String> getAllEntries() {
+		try {
+			ArrayList<String> entries = new ArrayList<String>();
+
+			for (Map.Entry<String, TreeSet<String>> keyWords : entryList
+					.entrySet()) {
+				TreeSet<String> strings = keyWords.getValue();
+				if (strings != null) {
+					Iterator<String> it = strings.iterator();
+					while (it.hasNext()) {
+						entries.add(it.next().toString());
+					}
 				}
 			}
-		}
 
-		return entries;
+			return entries;
+		} catch (Exception e) {
+			e.printStackTrace();
+			ArrayList<String> err = new ArrayList<String>();
+			err.add(INTERNAL_ERROR_MSG);
+			return err;
+		}
 	}
 }
