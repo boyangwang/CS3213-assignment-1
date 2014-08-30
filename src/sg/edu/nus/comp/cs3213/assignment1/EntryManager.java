@@ -74,8 +74,7 @@ public class EntryManager{
 			String str = keyWords.get(i);
 			TreeSet<String> strings = entryList.get(str.substring(0,1).toUpperCase().concat(str.substring(1)));
 			if(strings != null){
-				@SuppressWarnings("rawtypes")
-				Iterator it = strings.iterator();
+				Iterator<String> it = strings.iterator();
 				while(it.hasNext()){
 					entries.add(it.next().toString());
 				}
@@ -86,16 +85,11 @@ public class EntryManager{
 
 	public ArrayList<String> getAllEntries(){
 		ArrayList<String> entries = new ArrayList<String>();
-		@SuppressWarnings("rawtypes")
-		Collection mapValues = entryList.values();
 		
-		@SuppressWarnings({ "unused", "rawtypes" })
-		Iterator entryIt = mapValues.iterator();
 		for(Map.Entry<String, TreeSet<String>> keyWords : entryList.entrySet()){
 			TreeSet<String> strings = keyWords.getValue();
 			if(strings != null){
-				@SuppressWarnings("rawtypes")
-				Iterator it = strings.iterator();
+				Iterator<String> it = strings.iterator();
 				while(it.hasNext()){
 					entries.add(it.next().toString());    
 				}
