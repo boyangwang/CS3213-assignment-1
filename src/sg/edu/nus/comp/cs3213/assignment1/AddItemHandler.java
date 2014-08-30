@@ -26,8 +26,8 @@ public class AddItemHandler implements IAddItemHandler {
 		entryList.clear();
 		try {
 			IOHandler.readFileToList(entryList, entryPath, KeyWordInContext.READ_FILE_TYPE_ENTRY);
-			proc.addEntries(entryList);
-			output = "";
+			int resultCount = proc.addEntries(entryList);
+			output = String.format(KeyWordInContext.SUCCESS_ADD_MSG, resultCount);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			output = KeyWordInContext.FILE_NOT_FOUND_MSG;
@@ -52,8 +52,9 @@ public class AddItemHandler implements IAddItemHandler {
 			e.printStackTrace();
 			return KeyWordInContext.IOEXCEPTION_MSG;
 		}
-		proc.addEntries(entryList);
-		return KeyWordInContext.SUCCESS_MSG;
+
+		int resultCount = proc.addEntries(entryList);
+		return String.format(KeyWordInContext.SUCCESS_ADD_MSG, resultCount);
 	}
 	
 	

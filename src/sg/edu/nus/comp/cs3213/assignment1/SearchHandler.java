@@ -19,8 +19,8 @@ public class SearchHandler implements ISearchHandler {
 		try {
 			words = reader.readLine().split(" ");
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
+			return KeyWordInContext.IOEXCEPTION_MSG;
 		}
 		searchList.clear();
 		for (String w : words) {

@@ -9,7 +9,7 @@ import java.util.ArrayList;
 
 public class IOHandler {
 
-	static void readFileToList(ArrayList<String> list, String path,
+	public static void readFileToList(ArrayList<String> list, String path,
 			int readFileType) throws IOException, FileNotFoundException {
 		File f = new File(path);
 		BufferedReader r = new BufferedReader(new FileReader(f));

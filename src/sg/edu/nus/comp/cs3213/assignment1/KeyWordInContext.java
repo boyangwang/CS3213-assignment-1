@@ -21,6 +21,8 @@ public class KeyWordInContext {
 	static final String EXIT_MSG = "Bye";
 	static final String SUCCESS_MSG = "Successful!\n";
 	static final String FILE_NOT_FOUND_MSG = "The file you specified is not found";
+	static final String SUCCESS_ADD_MSG = "Successfully added. %d in total.\n";
+	
 
 	private static final String MENU_INSTRUCTIONS = new StringBuilder(
 			"Welcome to KWIC! Input your command number and then enter. Then input command argument(s). Please see command list and examples below.")

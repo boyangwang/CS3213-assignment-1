@@ -28,8 +28,8 @@ public class AddIgnoreHandler implements IAddIgnoreHandler {
 		for (String w : words) {
 			ignoreList.add(w);
 		}
-		proc.addIgnore(ignoreList);
-		return KeyWordInContext.SUCCESS_MSG;
+		int resultCount = proc.addIgnore(ignoreList);
+		return String.format(KeyWordInContext.SUCCESS_ADD_MSG, resultCount);
 	}
 
 	
@@ -47,8 +47,8 @@ public class AddIgnoreHandler implements IAddIgnoreHandler {
 		ignoreList.clear();
 		try {
 			IOHandler.readFileToList(ignoreList, ignorePath, KeyWordInContext.READ_FILE_TYPE_IGNORE);
-			proc.addIgnore(ignoreList);
-			output = "";
+			int resultCount = proc.addIgnore(ignoreList);
+			output = String.format(KeyWordInContext.SUCCESS_ADD_MSG, resultCount);
 		} catch (FileNotFoundException e) {
 			e.printStackTrace();
 			return KeyWordInContext.FILE_NOT_FOUND_MSG;
