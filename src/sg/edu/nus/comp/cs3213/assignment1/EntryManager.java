@@ -71,7 +71,12 @@ public class EntryManager{
 		int size = keyWords.size();
 		Collections.sort(keyWords);
 		for(int i=0; i<size; i++){
-			String str = keyWords.get(i);
+			String str = keyWords.get(i).trim();
+			
+			if (str == null || str.equals("")) {
+				continue;
+			}
+			
 			TreeSet<String> strings = entryList.get(str.substring(0,1).toUpperCase().concat(str.substring(1)));
 			if(strings != null){
 				Iterator<String> it = strings.iterator();
