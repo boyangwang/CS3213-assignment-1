@@ -7,7 +7,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class IOHandler {
+public class FileInputHandler {
 
 	public static void readFileToList(ArrayList<String> list, String path,
 			int readFileType) throws IOException, FileNotFoundException {

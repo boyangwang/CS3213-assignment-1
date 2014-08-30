@@ -46,7 +46,7 @@ public class AddIgnoreHandler implements IAddIgnoreHandler {
 		}
 		ignoreList.clear();
 		try {
-			IOHandler.readFileToList(ignoreList, ignorePath, KeyWordInContext.READ_FILE_TYPE_IGNORE);
+			FileInputHandler.readFileToList(ignoreList, ignorePath, KeyWordInContext.READ_FILE_TYPE_IGNORE);
 			int resultCount = proc.addIgnore(ignoreList);
 			output = String.format(KeyWordInContext.SUCCESS_ADD_MSG, resultCount);
 		} catch (FileNotFoundException e) {
