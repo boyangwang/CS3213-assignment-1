@@ -25,7 +25,7 @@ public class AddItemHandler implements IAddItemHandler {
 		}
 		entryList.clear();
 		try {
-			IOHandler.readFileToList(entryList, entryPath, KeyWordInContext.READ_FILE_TYPE_ENTRY);
+			FileInputHandler.readFileToList(entryList, entryPath, KeyWordInContext.READ_FILE_TYPE_ENTRY);
 			int resultCount = proc.addEntries(entryList);
 			output = String.format(KeyWordInContext.SUCCESS_ADD_MSG, resultCount);
 		} catch (FileNotFoundException e) {
