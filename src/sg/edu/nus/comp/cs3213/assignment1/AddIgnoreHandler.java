@@ -28,10 +28,10 @@ public class AddIgnoreHandler implements IAddIgnoreHandler {
 		for (String w : words) {
 			ignoreList.add(w);
 		}
-		System.out.println("length of ignorelist: " + ignoreList.size());
-		for (String word : ignoreList) {
-			System.out.println("ignore word: " + word);
-		}
+//		System.out.println("length of ignorelist: " + ignoreList.size());
+//		for (String word : ignoreList) {
+//			System.out.println("ignore word: " + word);
+//		}
 		int resultCount = proc.addIgnore(ignoreList);
 		return String.format(KeyWordInContext.SUCCESS_ADD_MSG, resultCount);
 	}
@@ -51,7 +51,7 @@ public class AddIgnoreHandler implements IAddIgnoreHandler {
 		ignoreList.clear();
 		try {
 			FileInputHandler.readFileToList(ignoreList, ignorePath, KeyWordInContext.READ_FILE_TYPE_IGNORE);
-			System.out.println("length of ignorelist: " + ignoreList.size());
+//			System.out.println("length of ignorelist: " + ignoreList.size());
 			int resultCount = proc.addIgnore(ignoreList);
 			output = String.format(KeyWordInContext.SUCCESS_ADD_MSG, resultCount);
 		} catch (FileNotFoundException e) {

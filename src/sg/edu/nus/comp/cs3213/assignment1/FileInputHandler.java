@@ -12,10 +12,12 @@ public class FileInputHandler {
 	public static void readFileToList(ArrayList<String> list, String path,
 			int readFileType) throws IOException, FileNotFoundException {
 		File f = new File(path);
+		
 		BufferedReader r = new BufferedReader(new FileReader(f));
 		if (readFileType == KeyWordInContext.READ_FILE_TYPE_ENTRY) {
 			String line = null;
 			while ((line = r.readLine()) != null) {
+				line = line.toLowerCase();
 				list.add(line);
 			}
 			
